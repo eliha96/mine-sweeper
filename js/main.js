@@ -110,14 +110,16 @@ function getRandomInt(max, min = 0) {
     return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
 }
 
-function onCellClicked(elCell, i, j, ev) {
+function onCellClicked(elCell, i, j) {
     if (gBoard[i][j].isMarked) return
 
     // update model
     gBoard[i][j].isRevealed = true
-    console.log(ev)
 
+    // update DOM
     elCell.querySelector('.cell-content').style.display = 'block'
+
+    checkGameOver()
 }
 
 function onCellMark(elCell, i, j, ev) {
@@ -127,11 +129,12 @@ function onCellMark(elCell, i, j, ev) {
 
     // update model
     gBoard[i][j].isMarked = !gBoard[i][j].isMarked
-    console.log(gBoard[i][j].isMarked)
 
 
     // update DOM
     elCell.querySelector('.cell-mark').style.display = gBoard[i][j].isMarked ? 'block' : 'none'
+
+    checkGameOver()
 }
 
 
@@ -139,3 +142,24 @@ function getClassName(position) {
     const cellClass = `cell-${position.i}-${position.j}`
     return cellClass
 }
+
+function checkGameOver() {
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[i].length; j++) {
+
+            var currCell = gBoard[i][j]
+
+            console.log('check for cell:', i, j, currCell )
+
+            // check if all not mines revealed 
+            if (!currCell.isRevealed && !currCell.isMine) return
+
+            // check if marked mine
+            if (currCell.isMine && !currCell.isMarked) return
+
+        }
+
+    }
+    return true
+}
+
