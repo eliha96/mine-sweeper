@@ -83,7 +83,7 @@ function renderBoard() {
         htmlStr += '<tr>'
         for (var j = 0; j < gBoard[i].length; j++) {
             var cellContent = gBoard[i][j].isMine ? MINE : gBoard[i][j].minesAroundCount
-            var cellPosClass = getClassName({i, j})
+            var cellPosClass = getClassName({ i, j })
             htmlStr += `<td class="cell num-${cellContent} ${cellPosClass}" onclick="onCellClicked(this, ${i}, ${j})"
             oncontextmenu="onCellMark(this, ${i}, ${j}, event)">
             <span class="cell-content">${cellContent === 0 ? '' : cellContent}</span>
@@ -112,14 +112,8 @@ function getRandomInt(max, min = 0) {
 
 function onCellClicked(elCell, i, j) {
     if (gBoard[i][j].isMarked) return
-
-    // update model
-    gBoard[i][j].isRevealed = true
-
-    // update DOM
-    elCell.querySelector('.cell-content').style.display = 'block'
-    elCell.style.backgroundColor = '#F9F8F6'
-
+    revealCell(elCell, i, j)
+    if (gBoard[i][j].minesAroundCount === 0) expandReveal(gBoard, {i, j})
     checkGameOver()
 }
 
@@ -157,6 +151,30 @@ function checkGameOver() {
 }
 
 function getClassName(position) {
-	const cellClass = `pos-${position.i}-${position.j}`
-	return cellClass
+    const cellClass = `pos-${position.i}-${position.j}`
+    return cellClass
+}
+
+function revealCell(elCell, i, j) {
+    // update model
+    gBoard[i][j].isRevealed = true
+
+    // update DOM
+    elCell.querySelector('.cell-content').style.display = 'block'
+    elCell.style.backgroundColor = '#F9F8F6'
+
+}
+
+function expandReveal(board, pos) {
+    for (var i = pos.i - 1; i <= pos.i + 1; i++) {
+        if (i < 0 || i >= board.length) continue
+
+        for (var j = pos.j - 1; j <= pos.j + 1; j++) {
+            if (j < 0 || j >= board[i].length) continue
+            if (i === pos.i && j === pos.j) continue
+
+            var elCell = document.querySelector(`.pos-${i}-${j}`)
+            if (!board[i][j].isMine) revealCell(elCell, i, j)
+        }
+    }
 }
