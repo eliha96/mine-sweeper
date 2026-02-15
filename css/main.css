@@ -20,6 +20,8 @@ table {
     text-align: center;
     border: 1px solid #D9CFC7;
     background-color: #D9CFC7;
+    font-weight: bold;
+    font-size: 20px;
 
 }
 
@@ -34,4 +36,14 @@ table {
 
 .cell-mark {
     display: none;
+}
+
+.num-1 {
+    color: blue
+}
+.num-2 {
+    color: green
+}
+.num-3 {
+    color: red
 }

@@ -82,11 +82,11 @@ function renderBoard() {
     for (var i = 0; i < gBoard.length; i++) {
         htmlStr += '<tr>'
         for (var j = 0; j < gBoard[i].length; j++) {
-            var classList = getClassName({ i, j })
-            htmlStr += `<td class="cell ${classList}" onclick="onCellClicked(this, ${i}, ${j})"
-            oncontextmenu="onCellMark(this, ${i}, ${j}, event)"
-            ><span class="cell-content">${gBoard[i][j].isMine ? MINE : gBoard[i][j].minesAroundCount}
-            </span>
+            var cellContent = gBoard[i][j].isMine ? MINE : gBoard[i][j].minesAroundCount
+            var cellPosClass = getClassName({i, j})
+            htmlStr += `<td class="cell num-${cellContent} ${cellPosClass}" onclick="onCellClicked(this, ${i}, ${j})"
+            oncontextmenu="onCellMark(this, ${i}, ${j}, event)">
+            <span class="cell-content">${cellContent === 0 ? '' : cellContent}</span>
             <span class="cell-mark">${FLAG}</span>
             </td>`
         }
@@ -118,6 +118,7 @@ function onCellClicked(elCell, i, j) {
 
     // update DOM
     elCell.querySelector('.cell-content').style.display = 'block'
+    elCell.style.backgroundColor = '#F9F8F6'
 
     checkGameOver()
 }
@@ -137,19 +138,11 @@ function onCellMark(elCell, i, j, ev) {
     checkGameOver()
 }
 
-
-function getClassName(position) {
-    const cellClass = `cell-${position.i}-${position.j}`
-    return cellClass
-}
-
 function checkGameOver() {
     for (var i = 0; i < gBoard.length; i++) {
         for (var j = 0; j < gBoard[i].length; j++) {
 
             var currCell = gBoard[i][j]
-
-            console.log('check for cell:', i, j, currCell )
 
             // check if all not mines revealed 
             if (!currCell.isRevealed && !currCell.isMine) return
@@ -163,3 +156,7 @@ function checkGameOver() {
     return true
 }
 
+function getClassName(position) {
+	const cellClass = `pos-${position.i}-${position.j}`
+	return cellClass
+}
