@@ -4,8 +4,8 @@ const MINE = '💣'
 const FLAG = '🚩'
 
 var gLevel = {
-    SIZE: 6,
-    MINES: 6
+    SIZE: 4,
+    MINES: 2
 }
 
 var gBoard = []
@@ -17,7 +17,10 @@ var gGame = {
     secsPassed: 0
 }
 
-buildBoard()
+
+function onGameInit() {
+    buildBoard()
+}
 
 function createMat(rows, cols = rows) {
     const mat = []
