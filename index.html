@@ -10,10 +10,14 @@
 
 <body onload="onGameInit()">
     <h1>Mine Sweeper</h1>
+    <div class="smiley-container">
+        <button class="smiley-btn" onmouseenter="onSmileyEnter(this)" onmouseleave="onSmileyLeave(this)" onmousedown="onSmileyClick(this)" onclick="onGameInit()">🙂</button>
+    </div>
     <table>
         <tbody></tbody>
     </table>
     <script src="js/main.js"></script>
+    <script src="js/smiley.js"></script>
 </body>
 
 </html>

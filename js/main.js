@@ -19,6 +19,7 @@ var gGame = {
 
 
 function onGameInit() {
+    gGame.isOn = true
     buildBoard()
 }
 
@@ -76,7 +77,10 @@ function countMinesAround(pos, board) {
 }
 
 function renderBoard() {
+    const elSmileyBtn = document.querySelector('.smiley-btn')
     const elTbody = document.querySelector('tbody')
+
+    elSmileyBtn.innerText = '🙂'
 
     var htmlStr = ''
     for (var i = 0; i < gBoard.length; i++) {
@@ -84,7 +88,7 @@ function renderBoard() {
         for (var j = 0; j < gBoard[i].length; j++) {
             var cellContent = gBoard[i][j].isMine ? MINE : gBoard[i][j].minesAroundCount
             var cellPosClass = getClassName({ i, j })
-            htmlStr += `<td class="cell num-${cellContent} ${cellPosClass}" onclick="onCellClicked(this, ${i}, ${j})"
+            htmlStr += `<td class="cell cell-hover ${cellContent === MINE ? 'mine' : 'num-' + cellContent} ${cellPosClass}" onclick="onCellClicked(this, ${i}, ${j})"
             oncontextmenu="onCellMark(this, ${i}, ${j}, event)">
             <span class="cell-content">${cellContent === 0 ? '' : cellContent}</span>
             <span class="cell-mark">${FLAG}</span>
@@ -111,10 +115,20 @@ function getRandomInt(max, min = 0) {
 }
 
 function onCellClicked(elCell, i, j) {
-    if (gBoard[i][j].isMarked) return
+    const clickedCell = gBoard[i][j]
+
+    if (!gGame.isOn || clickedCell.isMarked) return
+
     revealCell(elCell, i, j)
-    if (gBoard[i][j].minesAroundCount === 0) expandReveal(gBoard, {i, j})
-    checkGameOver()
+
+    if (clickedCell.isMine) {
+        gameOver()
+        return
+    }
+
+    if (clickedCell.minesAroundCount === 0) expandReveal(gBoard, { i, j })
+
+    if(isVictory()) gameOver()
 }
 
 function onCellMark(elCell, i, j, ev) {
@@ -129,10 +143,27 @@ function onCellMark(elCell, i, j, ev) {
     // update DOM
     elCell.querySelector('.cell-mark').style.display = gBoard[i][j].isMarked ? 'block' : 'none'
 
-    checkGameOver()
+    if(isVictory()) gameOver()
 }
 
-function checkGameOver() {
+function gameOver() {
+    gGame.isOn = false
+
+    // disable hover
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[i].length; j++) {
+            const currCell = document.querySelector(`.pos-${i}-${j}`)
+            console.log(currCell)
+            currCell.classList.remove('cell-hover')
+        }
+    }
+
+    const elSmileyBtn = document.querySelector('.smiley-btn')
+    isVictory() ? elSmileyBtn.innerText = '😎' : elSmileyBtn.innerText = '🤯'
+}
+
+
+function isVictory() {
     for (var i = 0; i < gBoard.length; i++) {
         for (var j = 0; j < gBoard[i].length; j++) {
 
@@ -161,7 +192,7 @@ function revealCell(elCell, i, j) {
 
     // update DOM
     elCell.querySelector('.cell-content').style.display = 'block'
-    elCell.style.backgroundColor = '#F9F8F6'
+    elCell.style.backgroundColor = gBoard[i][j].isMine ? 'red' : '#F9F8F6'
 
 }
 
@@ -174,7 +205,8 @@ function expandReveal(board, pos) {
             if (i === pos.i && j === pos.j) continue
 
             var elCell = document.querySelector(`.pos-${i}-${j}`)
-            if (!board[i][j].isMine) revealCell(elCell, i, j)
+            if (!board[i][j].isMine && !board[i][j].isMarked) revealCell(elCell, i, j)
         }
     }
 }
+
