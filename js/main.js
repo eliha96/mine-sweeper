@@ -17,10 +17,13 @@ var gGame = {
     secsPassed: 0
 }
 
+var gTimerInterval
+
 
 function onGameInit() {
     gGame.isOn = true
     buildBoard()
+    resetTimer()
 }
 
 function createMat(rows, cols = rows) {
@@ -40,41 +43,6 @@ function createMat(rows, cols = rows) {
     return mat
 }
 
-function placeMines() {
-    var mine = 0
-    while (mine < gLevel.MINES) {
-        var i = getRandomInt(gLevel.SIZE)
-        var j = getRandomInt(gLevel.SIZE)
-        gBoard[i][j].isMine = true
-        mine++
-    }
-}
-
-function setMinesNegsCount(board) {
-    for (var i = 0; i < board.length; i++) {
-        for (var j = 0; j < board[i].length; j++) {
-            var cellPos = { i, j }
-            board[i][j].minesAroundCount = countMinesAround(cellPos, board)
-        }
-
-    }
-
-}
-
-function countMinesAround(pos, board) {
-    var count = 0
-    for (var i = pos.i - 1; i <= pos.i + 1; i++) {
-        if (i < 0 || i >= board.length) continue
-
-        for (var j = pos.j - 1; j <= pos.j + 1; j++) {
-            if (j < 0 || j >= board[i].length) continue
-            if (i === pos.i && j === pos.j) continue
-
-            if (board[i][j].isMine) count++
-        }
-    }
-    return count
-}
 
 function renderBoard() {
     const elSmileyBtn = document.querySelector('.smiley-btn')
@@ -105,6 +73,7 @@ function buildBoard() {
     placeMines()
     setMinesNegsCount(gBoard)
     renderBoard()
+    handleMineCount()
 }
 
 
@@ -115,6 +84,8 @@ function getRandomInt(max, min = 0) {
 }
 
 function onCellClicked(elCell, i, j) {
+    if (!gTimerInterval) gTimerInterval = setInterval(runTimer,1000)
+
     const clickedCell = gBoard[i][j]
 
     if (!gGame.isOn || clickedCell.isMarked) return
@@ -122,6 +93,8 @@ function onCellClicked(elCell, i, j) {
     revealCell(elCell, i, j)
 
     if (clickedCell.isMine) {
+        revealAllMines(clickedCell)
+        elCell.style.backgroundColor = 'red'
         gameOver()
         return
     }
@@ -132,13 +105,14 @@ function onCellClicked(elCell, i, j) {
 }
 
 function onCellMark(elCell, i, j, ev) {
+    if (!gTimerInterval) gTimerInterval = setInterval(runTimer,1000)
 
     ev.preventDefault()
     if (gBoard[i][j].isRevealed) return
 
     // update model
     gBoard[i][j].isMarked = !gBoard[i][j].isMarked
-
+    handleMineCount()
 
     // update DOM
     elCell.querySelector('.cell-mark').style.display = gBoard[i][j].isMarked ? 'block' : 'none'
@@ -160,6 +134,9 @@ function gameOver() {
 
     const elSmileyBtn = document.querySelector('.smiley-btn')
     isVictory() ? elSmileyBtn.innerText = '😎' : elSmileyBtn.innerText = '🤯'
+
+    // stop timer
+    clearInterval(gTimerInterval)
 }
 
 
@@ -192,8 +169,7 @@ function revealCell(elCell, i, j) {
 
     // update DOM
     elCell.querySelector('.cell-content').style.display = 'block'
-    elCell.style.backgroundColor = gBoard[i][j].isMine ? 'red' : '#F9F8F6'
-
+    elCell.style.backgroundColor = '#F9F8F6'
 }
 
 function expandReveal(board, pos) {
@@ -209,4 +185,3 @@ function expandReveal(board, pos) {
         }
     }
 }
-

@@ -11,13 +11,22 @@
 <body onload="onGameInit()">
     <h1>Mine Sweeper</h1>
     <div class="smiley-container">
-        <button class="smiley-btn" onmouseenter="onSmileyEnter(this)" onmouseleave="onSmileyLeave(this)" onmousedown="onSmileyClick(this)" onclick="onGameInit()">🙂</button>
+        <div class="timer">
+            <h2><span class="minutes">00</span>:<span class="seconds">00</h2>
+        </div>
+        <button class="smiley-btn" onmouseenter="onSmileyEnter(this)" onmouseleave="onSmileyLeave(this)"
+            onmousedown="onSmileyClick(this)" onclick="onGameInit()">🙂</button>
+        <div class="mine-count">
+            <h2>💣 X <span class="num-mines">2</span></h2>
+        </div>
     </div>
     <table>
         <tbody></tbody>
     </table>
     <script src="js/main.js"></script>
+    <script src="js/mine.js"></script>
     <script src="js/smiley.js"></script>
+    <script src="js/timer.js"></script>
 </body>
 
 </html>

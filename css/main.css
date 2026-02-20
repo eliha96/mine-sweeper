@@ -9,6 +9,7 @@ h1 {
     color: brown;
 }
 
+
 table {
     margin: 0 auto;
     text-align: center;
@@ -40,6 +41,14 @@ table {
     border: none;
 }
 
+.timer {
+    display: inline-block;
+}
+
+
+.mine-count {
+    display: inline-block;
+}
 
 .cell-hover:hover {
     background-color: #F9F8F6;
