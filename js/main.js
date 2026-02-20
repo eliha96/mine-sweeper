@@ -24,6 +24,14 @@ function onGameInit() {
     gGame.isOn = true
     buildBoard()
     resetTimer()
+    handleMineCount()
+}
+
+function buildBoard() {
+    gBoard = createMat(gLevel.SIZE)
+    placeMines()
+    setMinesNegsCount(gBoard)
+    renderBoard()
 }
 
 function createMat(rows, cols = rows) {
@@ -68,20 +76,7 @@ function renderBoard() {
     elTbody.innerHTML = htmlStr
 }
 
-function buildBoard() {
-    gBoard = createMat(gLevel.SIZE)
-    placeMines()
-    setMinesNegsCount(gBoard)
-    renderBoard()
-    handleMineCount()
-}
 
-
-function getRandomInt(max, min = 0) {
-    const minCeiled = Math.ceil(min);
-    const maxFloored = Math.floor(max);
-    return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
-}
 
 function onCellClicked(elCell, i, j) {
     if (!gTimerInterval) gTimerInterval = setInterval(runTimer,1000)
@@ -156,11 +151,6 @@ function isVictory() {
 
     }
     return true
-}
-
-function getClassName(position) {
-    const cellClass = `pos-${position.i}-${position.j}`
-    return cellClass
 }
 
 function revealCell(elCell, i, j) {
