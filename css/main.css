@@ -76,3 +76,31 @@ table {
 .num-3 {
     color: red
 }
+
+.levels-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+.level {
+    width: 60px;
+    height: 30px;
+    font-size: small;
+    text-align: center;
+    background-color: #D9CFC7;
+    font-family: monospace;
+    font-size: 12px;
+    border: none;
+    border-radius: 15%;
+
+}
+.clicked {
+    background-color: #F9F8F6
+}
+
+footer {
+    margin: 20px;
+    text-align: center;
+    font-size: large;
+}

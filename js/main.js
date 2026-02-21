@@ -122,7 +122,6 @@ function gameOver() {
     for (var i = 0; i < gBoard.length; i++) {
         for (var j = 0; j < gBoard[i].length; j++) {
             const currCell = document.querySelector(`.pos-${i}-${j}`)
-            console.log(currCell)
             currCell.classList.remove('cell-hover')
         }
     }
@@ -159,7 +158,7 @@ function revealCell(elCell, i, j) {
 
     // update DOM
     elCell.querySelector('.cell-content').style.display = 'block'
-    elCell.style.backgroundColor = '#F9F8F6'
+    elCell.classList.add('clicked')
 }
 
 function expandReveal(board, pos) {
