@@ -26,8 +26,7 @@ table {
 
 }
 
-.smiley-container {
-    padding: 10px;
+.container {
     text-align: center;
 }
 
@@ -41,12 +40,18 @@ table {
     border: none;
 }
 
-.timer {
+.util {
     display: inline-block;
+    margin-inline-start: 10px;
+    margin-inline-end: 10px;
 }
 
 
 .mine-count {
+    display: inline-block;
+}
+
+.lives-count {
     display: inline-block;
 }
 

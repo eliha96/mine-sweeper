@@ -14,7 +14,8 @@ var gGame = {
     isOn: false,
     revealedCount: 0,
     markedCount: 0,
-    secsPassed: 0
+    secsPassed: 0,
+    livesCount: 3
 }
 
 var gTimerInterval
@@ -25,6 +26,7 @@ function onGameInit() {
     buildBoard()
     resetTimer()
     handleMineCount()
+    updateLivesCount(3)
 }
 
 function buildBoard() {
@@ -88,9 +90,7 @@ function onCellClicked(elCell, i, j) {
     revealCell(elCell, i, j)
 
     if (clickedCell.isMine) {
-        revealAllMines(clickedCell)
-        elCell.style.backgroundColor = 'red'
-        gameOver()
+        onMineClick(elCell, i, j)
         return
     }
 
@@ -99,10 +99,10 @@ function onCellClicked(elCell, i, j) {
     if(isVictory()) gameOver()
 }
 
-function onCellMark(elCell, i, j, ev) {
+function onCellMark(elCell, i, j, ev=null) {
     if (!gTimerInterval) gTimerInterval = setInterval(runTimer,1000)
 
-    ev.preventDefault()
+    if (ev) ev.preventDefault()
     if (gBoard[i][j].isRevealed) return
 
     // update model
@@ -161,6 +161,15 @@ function revealCell(elCell, i, j) {
     elCell.classList.add('clicked')
 }
 
+function hideCell(elCell, i, j) {
+    // update model
+    gBoard[i][j].isRevealed = false
+
+    // update DOM
+    elCell.querySelector('.cell-content').style.display = 'none'
+    elCell.classList.remove('clicked')
+}
+
 function expandReveal(board, pos) {
     for (var i = pos.i - 1; i <= pos.i + 1; i++) {
         if (i < 0 || i >= board.length) continue
@@ -173,4 +182,10 @@ function expandReveal(board, pos) {
             if (!board[i][j].isMine && !board[i][j].isMarked) revealCell(elCell, i, j)
         }
     }
+}
+
+function updateLivesCount(lives=null)  {
+    gGame.livesCount = lives ? lives : gGame.livesCount
+    const elLivesCount = document.querySelector('.num-lives')
+    elLivesCount.innerText = gGame.livesCount
 }

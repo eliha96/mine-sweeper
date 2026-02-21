@@ -4,27 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mine Sweeper</title>
+    <title>Minesweeper</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body onload="onGameInit()">
-    <h1>Mine Sweeper</h1>
-    <div class="smiley-container">
-        <div class="timer">
+    <h1>Minesweeper</h1>
+    <div class="container utils-container">
+                <div class="util">
             <h2><span class="minutes">00</span>:<span class="seconds">00</h2>
         </div>
-        <button class="smiley-btn" onmouseenter="onSmileyEnter(this)" onmouseleave="onSmileyLeave(this)"
-            onmousedown="onSmileyClick(this)" onclick="onGameInit()">🙂</button>
-        <div class="mine-count">
+        <div class="util">
             <h2>💣 X <span class="num-mines">2</span></h2>
         </div>
+        <div class="util">
+            <h2>❤️ X <span class="num-lives">3</span></h2>
+        </div>
     </div>
-    <div class="levels-container">
+    <div class="container levels-container">
         <button class="level cell-hover clicked" onclick="onLevelClick(this)">Easy</button>
         <button class="level cell-hover" onclick="onLevelClick(this)">Medium</button>
         <button class="level cell-hover" onclick="onLevelClick(this)">Hard</button>
         <button class="level cell-hover" onclick="onLevelClick(this)">Custom</button>
+    </div>
+    <div class="container smiley-container">
+        <button class="smiley-btn" onmouseenter="onSmileyEnter(this)" onmouseleave="onSmileyLeave(this)"
+            onmousedown="onSmileyClick(this)" onclick="onGameInit()">🙂</button>
     </div>
     <table>
         <tbody></tbody>
@@ -37,4 +42,5 @@
     <script src="js/utils.js"></script>
 </body>
 <footer>© Eli Haevry</footer>
+
 </html>

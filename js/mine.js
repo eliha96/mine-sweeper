@@ -71,3 +71,21 @@ function handleMineCount() {
 
     numMines < 0 ? elNumMine.style.color = 'red' : elNumMine.style.color = 'black'
 }
+
+
+function onMineClick(elCell, i, j) {
+    gGame.livesCount--
+    updateLivesCount()
+
+    if (gGame.livesCount === 0) {
+        revealAllMines()
+        elCell.style.backgroundColor = 'red'
+        gameOver()
+        return
+    }
+
+    setTimeout(() => {
+        hideCell(elCell, i, j)
+        onCellMark(elCell, i, j)
+    }, 300)
+}
