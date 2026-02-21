@@ -5,7 +5,8 @@ const FLAG = '🚩'
 
 var gLevel = {
     SIZE: 4,
-    MINES: 2
+    MINES: 2,
+    LIVES: 1
 }
 
 var gBoard = []
@@ -15,7 +16,7 @@ var gGame = {
     revealedCount: 0,
     markedCount: 0,
     secsPassed: 0,
-    livesCount: 3
+    livesCount: 0
 }
 
 var gTimerInterval
@@ -26,7 +27,7 @@ function onGameInit() {
     buildBoard()
     resetTimer()
     handleMineCount()
-    updateLivesCount(3)
+    updateLivesCount(gLevel.LIVES)
 }
 
 function buildBoard() {
