@@ -1,10 +1,12 @@
 'use strict'
 
-function placeMines() {
+function placeMines(currCell) {
     var mine = 0
     while (mine < gLevel.MINES) {
         var i = getRandomInt(gLevel.SIZE)
         var j = getRandomInt(gLevel.SIZE)
+
+        if(i === currCell.i && j === currCell.j) continue
         
         // prevent two mines placed at the same place
         if (gBoard[i][j].isMine) continue

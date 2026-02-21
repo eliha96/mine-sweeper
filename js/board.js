@@ -37,7 +37,7 @@ function renderBoard() {
             var cellContent = gBoard[i][j].isMine ? MINE : gBoard[i][j].minesAroundCount
             var cellPosClass = getClassName({ i, j })
             htmlStr += `<td class="cell cell-hover ${cellContent === MINE ? 'mine' : 'num-' + cellContent} ${cellPosClass}" onclick="onCellClicked(this, ${i}, ${j})"
-            oncontextmenu="onCellMark(this, ${i}, ${j}, event)" onmousedown="onFirstMouseClick(this, ${i}, ${j})">
+            oncontextmenu="onCellMark(this, ${i}, ${j}, event)">
             <span class="cell-content">${cellContent === 0 ? '' : cellContent}</span>
             <span class="cell-mark">${FLAG}</span>
             </td>`
